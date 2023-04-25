@@ -10,9 +10,8 @@ ENV PORT 8000
 COPY . .
 
 RUN \
-    python3 -m pip install -r requirements.txt && \
-    mkdir static && \
-    python3 manage.py collectstatic --noinput
+    python3 -m pip install -r requirements.txt --no-cache-dir && \
+    python3 manage.py collectstatic --noinput --clear
 
 EXPOSE 8000
 
