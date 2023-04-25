@@ -23,14 +23,15 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', f'{env("HEROKU_APP_NAME")}.herokuapp.
 # Application definition
 
 INSTALLED_APPS = [
+    'lettings.apps.LettingsConfig',
+    'profiles.apps.ProfilesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'lettings.apps.LettingsConfig',
-    'profiles.apps.ProfilesConfig'
+    
 ]
 
 MIDDLEWARE = [

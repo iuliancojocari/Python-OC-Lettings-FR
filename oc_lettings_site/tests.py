@@ -4,7 +4,7 @@ from django.test import Client
 
 def test_home_index():
     client = Client()
-    response = client.get(reverse('home:index'))
+    response = client.get(reverse('index'))
     content = response.content.decode()
     expected_content = "<title>Holiday Homes</title>"
 
