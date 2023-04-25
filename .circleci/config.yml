@@ -1,0 +1,86 @@
+version: 2.1
+
+jobs:
+  test-application:
+    docker:
+      - image: cimg/python:3.10.11
+    resource_class: small
+    working_directory: ~/app
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          name: Setup virtual env / Install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths: 
+            - ".venv"
+      - run:
+          name: Run Linting
+          command: |
+            . venv/bin/activate
+            flake8
+      - run:
+          name: Run Tests
+          command: |
+            . venv/bin/activate
+            pytest
+
+  build-docker-image:
+    docker:
+      - image: cimg/python:3.10.11
+    resource_class: small
+    working_directory: ~/app
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace: 
+          at: ~/app
+      - run:
+          name : Build docker image
+          command : |
+            docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
+            docker build -t $DOCKERHUB_IMAGE_NAME:$CIRCLE_SHA1 .
+            docker tag $DOCKERHUB_IMAGE_NAME:$CIRCLE_SHA1 $DOCKERHUB_REPOSITORY/$DOCKERHUB_IMAGE_NAME:$CIRCLE_SHA1
+            docker push $DOCKERHUB_REPOSITORY/$DOCKERHUB_IMAGE_NAME:$CIRCLE_SHA1
+
+  deploy:
+      machine: 
+        image: ubuntu-2004:current
+      resource_class: medium
+      steps:
+        - checkout
+        - run:
+            name: "Deploy docker app"
+            command: |
+              sudo curl https://cli-assets.heroku.com/install.sh | sh
+              HEROKU_API_KEY=$HEROKU_API_KEY heroku container:login
+              HEROKU_API_KEY=${HEROKU_API_KEY} heroku config:set SECRET_KEY=$SECRET_KEY -a $HEROKU_APP_NAME
+              HEROKU_API_KEY=${HEROKU_API_KEY} heroku config:set SENTRY_DSN=$SENTRY_DSN -a $HEROKU_APP_NAME
+              HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:push -a $HEROKU_APP_NAME web
+              HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release -a $HEROKU_APP_NAME web
+
+workflows:
+  main: 
+    jobs:
+      - test-application
+      - build-docker-image:
+          requires: 
+            - test-application
+          filters:
+            branches: 
+              only: 
+                - master
+      - deploy:
+          requires:
+            - test-application
+            - build-docker-image
+          filters:
+            branches:
+              only:
+                - master
