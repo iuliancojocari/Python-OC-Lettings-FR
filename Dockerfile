@@ -4,12 +4,13 @@ WORKDIR /app
 
 ENV SENTRY_DSN $SENTRY_DSN
 ENV HEROKU_APP_NAME $HEROKU_APP_NAME
-ENV SECRET_KEY $SECRET_KEY
+
 ENV PORT 8000
 
 COPY . .
 
 RUN python3 -m pip install -r requirements.txt --no-cache-dir
+RUN mkdir static
 RUN python3 manage.py collectstatic --noinput --clear
 
 EXPOSE 8000
