@@ -12,7 +12,7 @@ COPY . .
 RUN python3 -m pip install -r requirements.txt
 
 RUN mkdir -p static
-RUN python manage.py collectstatic --noinput
+RUN python3 manage.py collectstatic --noinput
 
 EXPOSE 8000
 
