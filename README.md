@@ -39,7 +39,7 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 1. Créer fichier .env à la racine du projet 
 2. Définir les variables suivaintes ainsi que leur valeurs (vous devez remplacers les valeurs ci-dessous avec vos propres informatiosn): 
     - SECRET_KEY='fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s'
-    - SENTRY_DSN="https://8f9e336562cc4d2da557052d5d5f10b2@o4505065345974272.ingest.sentry.io/4505065396633600"
+    - SENTRY_DSN="votre_dsn_sentry"
     - HEROKU_APP_NAME=oc-letting
 
 
