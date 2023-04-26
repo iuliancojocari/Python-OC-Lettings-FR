@@ -151,4 +151,5 @@ Pour créer une application dans votre compte Heroku, vous pouvez passer via l'i
 
 Après avoir créé un compte Sentry, créer un projet pour la plateforme Django. Le SENTRY_DSN sera disponible dans Project Settings > Client Keys (DSN). Veillez à ajouter cette variable à CircleCI et dans le fichier .env.
 
-La journalisation Sentry peut être testée en naviguant vers /sentry-debug/, localement (avec runserver ou une image Docker) et sur l'application déployée via https://<HEROKU_APP_NAME>.herokuapp.com/sentry-debug/. Ce point de terminaison provoque une ZeroDivisionError
+La journalisation Sentry peut être testée en naviguant vers /sentry-debug/, localement (avec runserver ou une image Docker) et sur l'application déployée via https://<HEROKU_APP_NAME>.herokuapp.com/sentry-debug/. 
+Ce point de terminaison provoque une ZeroDivisionError
