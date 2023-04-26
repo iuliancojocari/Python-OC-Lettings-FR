@@ -1,6 +1,12 @@
-## Résumé
+# Livrable projet 13 OC - Mettez à l'échelle une application Django en utilisant une architecture modulaire
 
-Site web d'Orange County Lettings
+Plusieurs domaine du site Orange County Lettings ont été améliorés à partir du projet [a link](https://github.com/OpenClassrooms-Student-Center/Python-OC-Lettings-FR)
+
+1. Réduction de diverses dettes techniques sur le projet
+2. Refonte de l'architecture modulaire
+3. Ajout d'un pipeline CI/CD et le déploiment
+4. Surveillance de l’application et suivi des erreurs via Sentry. 
+
 
 ## Développement local
 
@@ -13,55 +19,58 @@ Site web d'Orange County Lettings
 
 Dans le reste de la documentation sur le développement local, il est supposé que la commande `python` de votre OS shell exécute l'interpréteur Python ci-dessus (à moins qu'un environnement virtuel ne soit activé).
 
-### macOS / Linux
+### Windows
 
 #### Cloner le repository
 
-- `cd /path/to/put/project/in`
-- `git clone https://github.com/OpenClassrooms-Student-Center/Python-OC-Lettings-FR.git`
+- `cd .\path\to\put\project\in`
+- `git clone https://github.com/iuliancojocari/Python-OC-Lettings-FR.git`
 
 #### Créer l'environnement virtuel
 
-- `cd /path/to/Python-OC-Lettings-FR`
+- `cd ./path/to/Python-OC-Lettings-FR`
 - `python -m venv venv`
-- `apt-get install python3-venv` (Si l'étape précédente comporte des erreurs avec un paquet non trouvé sur Ubuntu)
-- Activer l'environnement `source venv/bin/activate`
-- Confirmer que la commande `python` exécute l'interpréteur Python dans l'environnement virtuel
-`which python`
+- Activer l'environnement `.\venv\Scripts\activate`
 - Confirmer que la version de l'interpréteur Python est la version 3.6 ou supérieure `python --version`
-- Confirmer que la commande `pip` exécute l'exécutable pip dans l'environnement virtuel, `which pip`
-- Pour désactiver l'environnement, `deactivate`
+
+
+## Variables d'environnement - création fichier .env
+
+1. Créer fichier .env à la racine du projet 
+2. Définir les variables suivaintes ainsi que leur valeurs (vous devez remplacers les valeurs ci-dessous avec vos propres informatiosn): 
+    - SECRET_KEY='fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s'
+    - SENTRY_DSN="https://8f9e336562cc4d2da557052d5d5f10b2@o4505065345974272.ingest.sentry.io/4505065396633600"
+    - HEROKU_APP_NAME=oc-letting
+
 
 #### Exécuter le site
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `source venv/bin/activate`
-- `pip install --requirement requirements.txt`
+- `cd .\path\to\Python-OC-Lettings-FR`
+- `.\venv\Scripts\activate`
+- `pip install -r requirements.txt`
 - `python manage.py runserver`
 - Aller sur `http://localhost:8000` dans un navigateur.
-- Confirmer que le site fonctionne et qu'il est possible de naviguer (vous devriez voir plusieurs profils et locations).
 
 #### Linting
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `source venv/bin/activate`
+- `.\path\to\Python-OC-Lettings-FR`
+- `.\venv\Scripts\activate`
 - `flake8`
 
 #### Tests unitaires
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `source venv/bin/activate`
+- `.\path\to\Python-OC-Lettings-FR`
+- `.\venv\Scripts\activate`
 - `pytest`
 
 #### Base de données
 
-- `cd /path/to/Python-OC-Lettings-FR`
+- `cd .\path\to\Python-OC-Lettings-FR`
 - Ouvrir une session shell `sqlite3`
-- Se connecter à la base de données `.open oc-lettings-site.sqlite3`
+- Se connecter à la base de données `sqlite3 .\oc-lettings-site.sqlite3`
 - Afficher les tables dans la base de données `.tables`
-- Afficher les colonnes dans le tableau des profils, `pragma table_info(Python-OC-Lettings-FR_profile);`
-- Lancer une requête sur la table des profils, `select user_id, favorite_city from
-  Python-OC-Lettings-FR_profile where favorite_city like 'B%';`
+- Afficher les colonnes dans le tableau des profils, `pragma table_info(profiles_profile)`
+- Lancer une requête sur la table des profils, `select user_id, favorite_city from profiles_profile where favorite_city like 'B%';`
 - `.quit` pour quitter
 
 #### Panel d'administration
@@ -69,9 +78,4 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 - Aller sur `http://localhost:8000/admin`
 - Connectez-vous avec l'utilisateur `admin`, mot de passe `Abc1234!`
 
-### Windows
 
-Utilisation de PowerShell, comme ci-dessus sauf :
-
-- Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
-- Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
