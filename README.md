@@ -94,3 +94,41 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 3. Copier le tag de l'image de votre choix (de préférence le plus récent)
 4. Utiliser la commande ddocker run -p 80:8000 -td icojocari42/oc_lettings:<image-tag>, en remplaçant image-tag par le tag de l'image souhaitée
 5. Vous pouvez accéder à l'application dans un navigateur via http://127.0.0.1
+
+
+# Déploiement
+
+## Prérequis
+Vous aurez besoin des comptes ci-dessous afin de pouvoir réaliser l'intégration continue et le déploiement de l'application : 
+
+- [GitHub](https://github.com/)
+- [CircleCI (avec autorisations sur le compte GitHub)](https://app.circleci.com/)
+- [Docker](https://www.docker.com/)
+- [Heroku](https://www.heroku.com/)
+- [Sentry](https://sentry.io/)
+
+Le déploiement de l'application est automatisé par un pipeline CircleCI. Lorsque des modifications sont apportées au niveau du repository Github, alors le pipeline lance l'exécution du Linting et des Tests, opérations qui sont éxécutées sur toutes les branches du repository. 
+
+Lorsque des modifications sont apportées sur la branche master du repository, alors en plus de l'exécution du Linting et des Test, le pipeline va construire une image docker et va la pusher sur le Dockerhub et va effectuer le déploiement de l'application sur Heroku.
+- Le build de l'image Docker est fait seulemement si les Linting et les Tests sont réussis
+- Le déploiement de l'application est effectué seuelement si les Linting, les Tests et le build de l'image Docker sont réussis
+
+
+# Configuration
+
+## CircleCI
+
+Après avoir récupéré le projet, mis en place l'environnement de développement local et créé les comptes requis, initialiser un projet sur CircleCI via "Set Up Project". Sélectionner la branche master comme source pour le fichier .circleci/config.yml.
+
+Pour faire fonctionner le pipeline CircleCI, il est nécessaire de préciser des variables d'environnement.
+Pour cela, aller dans Project Settings > Environment Variables. 
+
+Voici les variables d'environnement à définir : 
+1. `DOCKERHUB_IMAGE_NAME` -> Nom de l'image docker à 'builder' et 'pusher' sur Dockerhub
+2. `DOCKERHUB_PASSWORD` -> Mot de passe du compte Dockerhub
+3. `DOCKERHUB_REPOSITORY` -> Le repository Dockerhub
+4. `DOCKERHUB_USERNAME` -> Nom d'utilisateur Dockerhub
+5. `HEROKU_API_KEY` -> La clé secrete Heroku générée lors de la création de l'application
+6. `HEROKU_APP_NAME` -> Le nom de l'application créée sur Heroku
+7. `SECRET_KEY` -> La clé secrete Django
+8. `SENTRY_DSN` -> Le DSN du projet configuré au niveau de Sentry
