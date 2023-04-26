@@ -78,4 +78,19 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 - Aller sur `http://localhost:8000/admin`
 - Connectez-vous avec l'utilisateur `admin`, mot de passe `Abc1234!`
 
+## Docker conteneurisation
 
+### Lancement de l'application en local en créant une image docker
+1. Télécharger et installer Docker
+2. Vous rendre dans le répertoire du projet `cd .\path\to\Python-OC-Lettings-FR`
+3. Vérifier que le fichier .env nécessaire a été créé et que les variables ont été définies
+4. Créer l'image `docker build -t <image-name> .` avec le nom de votre choix
+5. Utiliser la commande `docker run -p 80:8000 -td <image-name>`, en remplaçant image-name par le nom de l'image créée
+6. Vous pouvez accéder à l'application dans un navigateur via http://127.0.0.1
+
+### Lancement de l'application en local en téléchargeant une image depuis DockerHub
+1. Télécharger et installer Docker
+2. Aller sur le repository Docker : https://hub.docker.com/repository/docker/icojocari42/oc_lettings/tags
+3. Copier le tag de l'image de votre choix (de préférence le plus récent)
+4. Utiliser la commande ddocker run -p 80:8000 -td icojocari42/oc_lettings:<image-tag>, en remplaçant image-tag par le tag de l'image souhaitée
+5. Vous pouvez accéder à l'application dans un navigateur via http://127.0.0.1
