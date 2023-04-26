@@ -132,3 +132,22 @@ Voici les variables d'environnement à définir :
 6. `HEROKU_APP_NAME` -> Le nom de l'application créée sur Heroku
 7. `SECRET_KEY` -> La clé secrete Django
 8. `SENTRY_DSN` -> Le DSN du projet configuré au niveau de Sentry
+
+
+## Docker
+
+Créer un repository sur DockerHub. Le nom du repository doit correspondre à la variable DOCKERHUB_REPOSITORY définie pour CircleCI.
+
+Le workflow de CircleCI va créer et déposer l'image de l'application dans le repository DockerHub défini. Il tague les images avec le “hash” de commit CircleCI ($CIRCLE_SHA1).
+
+
+## Heroku
+
+Pour créer une application dans votre compte Heroku, vous pouvez passer via l'interface WEB :
+- Créer manuellement l'application sur le site. Le nom de l'application doit correspondre à la variable HEROKU_APP_NAME définie pour CircleCI. 
+
+
+## Sentry
+
+Après avoir créé un compte Sentry, créer un projet pour la plateforme Django. Le SENTRY_DSN sera disponible dans Project Settings > Client Keys (DSN). Veillez à ajouter cette variable à CircleCI et dans le fichier .env
+La journalisation Sentry peut être testée en naviguant vers /sentry-debug/, localement (avec runserver ou une image Docker) et sur l'application déployée via https://<HEROKU_APP_NAME>.herokuapp.com/sentry-debug/. Ce point de terminaison provoque une ZeroDivisionError
