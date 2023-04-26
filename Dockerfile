@@ -12,6 +12,7 @@ COPY . .
 
 RUN \
   python3 -m pip install -r requirements.txt --no-cache-dir && \
+  mkdir static && \
   python3 manage.py collectstatic --no-input --clear
 
 EXPOSE 8000
