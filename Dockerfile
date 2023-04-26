@@ -15,7 +15,7 @@ COPY . .
 
 RUN \
   python3 -m pip install -r requirements.txt --no-cache-dir && \
-  python3 manage.py collectstatic --noinput --clear
+  SECRET_KEY=${SECRET_KEY} python3 manage.py collectstatic --no-input --clear
 
 EXPOSE 8000
 
